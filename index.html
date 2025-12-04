@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -15,7 +16,7 @@
             --primary: #10b981;
             --primary-dark: #059669;
             --primary-light: #34d399;
-            
+
             /* Neutrals - Dark Navy backgrounds with cream text */
             --dark-bg: #0f1419;
             --dark-bg-secondary: #1a1f2e;
@@ -24,17 +25,17 @@
             --light-text: #cbd5e1;
             --dark-border: #3a4556;
             --accent-cream: #f0e8d8;
-            
+
             /* Accents - Sophisticated palette */
             --accent-cyan: #06d6d6;
             --accent-amber: #fbbf24;
             --accent-rose: #fb7185;
             --accent-teal: #14b8a6;
-            
+
             /* Hover & Interactive States */
             --interactive-hover: rgba(16, 185, 129, 0.1);
             --interactive-focus: rgba(16, 185, 129, 0.15);
-            
+
             /* Spacing & Sizing */
             --spacing-xs: 0.5rem;
             --spacing-sm: 1rem;
@@ -42,13 +43,13 @@
             --spacing-lg: 2rem;
             --spacing-xl: 3rem;
             --spacing-2xl: 4rem;
-            
+
             /* Border Radius */
             --radius-sm: 0.375rem;
             --radius-md: 0.5rem;
             --radius-lg: 1rem;
             --radius-xl: 1.5rem;
-            
+
             /* Shadow - Premium depth */
             --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.5);
             --shadow-md: 0 4px 8px -1px rgba(0, 0, 0, 0.6);
@@ -77,7 +78,12 @@
         }
 
         /* Typography - Enhanced hierarchy */
-        h1, h2, h3, h4, h5, h6 {
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6 {
             font-weight: 700;
             line-height: 1.2;
             margin-bottom: var(--spacing-md);
@@ -318,8 +324,15 @@
         }
 
         @keyframes float {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(30px); }
+
+            0%,
+            100% {
+                transform: translateY(0px);
+            }
+
+            50% {
+                transform: translateY(30px);
+            }
         }
 
         .hero-content {
@@ -444,29 +457,126 @@
 
         /* Responsive Design */
         @media (max-width: 768px) {
+            :root {
+                --spacing-lg: 1.5rem;
+                --spacing-xl: 2rem;
+                --spacing-2xl: 3rem;
+            }
+
             h1 {
-                font-size: 2.5rem;
+                font-size: 2.25rem;
             }
 
             h2 {
-                font-size: 1.875rem;
+                font-size: 1.75rem;
+            }
+
+            h3 {
+                font-size: 1.5rem;
+            }
+
+            /* Navigation Mobile Layout */
+            nav.container {
+                flex-direction: column;
+                gap: var(--spacing-md);
+                padding-top: var(--spacing-md);
+                padding-bottom: var(--spacing-md);
             }
 
             nav ul {
-                gap: var(--spacing-lg);
-                font-size: 0.85rem;
+                gap: var(--spacing-sm);
+                font-size: 0.9rem;
+                flex-wrap: wrap;
+                justify-content: center;
+                width: 100%;
+            }
+
+            nav a {
+                display: inline-block;
+                padding: var(--spacing-xs) var(--spacing-sm);
             }
 
             .container {
                 padding: 0 var(--spacing-md);
             }
 
-            .grid-2 {
+            /* Grid Adjustments */
+            .grid-2,
+            .grid-3 {
                 grid-template-columns: 1fr;
+            }
+
+            /* Hero Section Mobile */
+            #hero {
+                min-height: auto;
+                padding: var(--spacing-2xl) 0;
+                text-align: center;
+            }
+
+            .hero-content {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .hero-diagram {
+                min-height: 300px;
+                margin-top: var(--spacing-lg);
+            }
+
+            /* SVG Scaling */
+            svg {
+                max-width: 100%;
+                height: auto;
+            }
+
+            /* Mode Explorer Mobile */
+            .mode-visualization {
+                min-height: 400px;
+                padding: var(--spacing-md);
+            }
+
+            .mass-system {
+                transform: scale(0.85);
+                transform-origin: center;
+            }
+
+            /* Calculator Inputs */
+            #frequency .container>div>div {
+                grid-template-columns: 1fr;
+            }
+
+            /* Quiz Mobile */
+            .card {
+                padding: var(--spacing-lg);
+            }
+        }
+
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 1.85rem;
+            }
+
+            .hero-subtitle {
+                font-size: 1rem;
+            }
+
+            nav ul {
+                gap: 0.25rem;
+            }
+
+            nav a {
+                font-size: 0.8rem;
+                padding: 0.25rem 0.5rem;
+            }
+
+            .mass-system {
+                transform: scale(0.7);
             }
         }
     </style>
 </head>
+
 <body>
     <!-- Navigation Header -->
     <header>
@@ -490,12 +600,16 @@
                 <div class="hero-subtitle">Learn Engineering through Motion</div>
                 <h1>Car Suspension Vibration Analysis</h1>
                 <p class="hero-description">
-                    Discover how mathematical diagonalisation helps engineers understand how a car's suspension system vibrates on bumpy roads. This isn't just physics—it's the math that makes vehicles safe and comfortable.
+                    Discover how mathematical diagonalisation helps engineers understand how a car's suspension system
+                    vibrates on bumpy roads. This isn't just physics—it's the math that makes vehicles safe and
+                    comfortable.
                 </p>
                 <p style="color: var(--light-text); font-size: 0.95rem; margin-bottom: var(--spacing-xl);">
-                    Explore how three masses connected by springs and dampers oscillate in different patterns, and how linear algebra reveals the hidden frequencies within.
+                    Explore how three masses connected by springs and dampers oscillate in different patterns, and how
+                    linear algebra reveals the hidden frequencies within.
                 </p>
-                <button class="btn btn-primary" onclick="document.getElementById('theory').scrollIntoView({behavior: 'smooth'})">
+                <button class="btn btn-primary"
+                    onclick="document.getElementById('theory').scrollIntoView({behavior: 'smooth'})">
                     Start Learning →
                 </button>
             </div>
@@ -509,34 +623,42 @@
                             <stop offset="100%" style="stop-color:#10b981;stop-opacity:0.5" />
                         </linearGradient>
                     </defs>
-                    <rect x="40" y="120" width="220" height="60" fill="url(#carGradient)" stroke="#34d399" stroke-width="2" rx="8"/>
-                    
+                    <rect x="40" y="120" width="220" height="60" fill="url(#carGradient)" stroke="#34d399"
+                        stroke-width="2" rx="8" />
+
                     <!-- Windows -->
-                    <rect x="60" y="125" width="40" height="20" fill="none" stroke="#06d6d6" stroke-width="1.5" rx="2"/>
-                    <rect x="200" y="125" width="40" height="20" fill="none" stroke="#06d6d6" stroke-width="1.5" rx="2"/>
-                    
+                    <rect x="60" y="125" width="40" height="20" fill="none" stroke="#06d6d6" stroke-width="1.5"
+                        rx="2" />
+                    <rect x="200" y="125" width="40" height="20" fill="none" stroke="#06d6d6" stroke-width="1.5"
+                        rx="2" />
+
                     <!-- Wheels -->
-                    <circle cx="80" cy="180" r="15" fill="none" stroke="#fbbf24" stroke-width="2.5"/>
-                    <circle cx="80" cy="180" r="10" fill="none" stroke="#fbbf24" stroke-width="1"/>
-                    <circle cx="220" cy="180" r="15" fill="none" stroke="#fbbf24" stroke-width="2.5"/>
-                    <circle cx="220" cy="180" r="10" fill="none" stroke="#fbbf24" stroke-width="1"/>
-                    
+                    <circle cx="80" cy="180" r="15" fill="none" stroke="#fbbf24" stroke-width="2.5" />
+                    <circle cx="80" cy="180" r="10" fill="none" stroke="#fbbf24" stroke-width="1" />
+                    <circle cx="220" cy="180" r="15" fill="none" stroke="#fbbf24" stroke-width="2.5" />
+                    <circle cx="220" cy="180" r="10" fill="none" stroke="#fbbf24" stroke-width="1" />
+
                     <!-- Suspension springs - enhanced visualization -->
-                    <path d="M 80 180 Q 70 160, 75 130" fill="none" stroke="#fbbf24" stroke-width="2.5" stroke-linecap="round"/>
-                    <path d="M 80 180 Q 70 160, 75 130" fill="none" stroke="#34d399" stroke-width="1" stroke-dasharray="5,5"/>
-                    
-                    <path d="M 220 180 Q 230 160, 225 130" fill="none" stroke="#fbbf24" stroke-width="2.5" stroke-linecap="round"/>
-                    <path d="M 220 180 Q 230 160, 225 130" fill="none" stroke="#34d399" stroke-width="1" stroke-dasharray="5,5"/>
-                    
+                    <path d="M 80 180 Q 70 160, 75 130" fill="none" stroke="#fbbf24" stroke-width="2.5"
+                        stroke-linecap="round" />
+                    <path d="M 80 180 Q 70 160, 75 130" fill="none" stroke="#34d399" stroke-width="1"
+                        stroke-dasharray="5,5" />
+
+                    <path d="M 220 180 Q 230 160, 225 130" fill="none" stroke="#fbbf24" stroke-width="2.5"
+                        stroke-linecap="round" />
+                    <path d="M 220 180 Q 230 160, 225 130" fill="none" stroke="#34d399" stroke-width="1"
+                        stroke-dasharray="5,5" />
+
                     <!-- Dampers -->
-                    <rect x="72" y="140" width="6" height="35" fill="none" stroke="#06d6d6" stroke-width="1.5" rx="3"/>
-                    <rect x="222" y="140" width="6" height="35" fill="none" stroke="#06d6d6" stroke-width="1.5" rx="3"/>
-                    
+                    <rect x="72" y="140" width="6" height="35" fill="none" stroke="#06d6d6" stroke-width="1.5" rx="3" />
+                    <rect x="222" y="140" width="6" height="35" fill="none" stroke="#06d6d6" stroke-width="1.5"
+                        rx="3" />
+
                     <!-- Ground -->
-                    <line x1="30" y1="260" x2="270" y2="260" stroke="#3a4556" stroke-width="3"/>
-                    <line x1="30" y1="265" x2="270" y2="265" stroke="#3a4556" stroke-width="1"/>
-                    <path d="M 35 260 L 30 268 M 50 260 L 45 268 M 65 260 L 60 268" stroke="#3a4556" stroke-width="1"/>
-                    
+                    <line x1="30" y1="260" x2="270" y2="260" stroke="#3a4556" stroke-width="3" />
+                    <line x1="30" y1="265" x2="270" y2="265" stroke="#3a4556" stroke-width="1" />
+                    <path d="M 35 260 L 30 268 M 50 260 L 45 268 M 65 260 L 60 268" stroke="#3a4556" stroke-width="1" />
+
                     <!-- Labels -->
                     <text x="150" y="290" text-anchor="middle" fill="#cbd5e1" font-size="12">Road Surface</text>
                 </svg>
@@ -548,26 +670,30 @@
     <section id="theory" class="section">
         <div class="container">
             <h2 style="text-align: center; margin-bottom: var(--spacing-2xl);">Understanding Vibration Concepts</h2>
-            
+
             <div class="concept-grid">
                 <div class="card">
                     <h4>Degree of Freedom (DOF)</h4>
-                    <p>A 3-DOF model represents three independent movements: the body can move up/down, and the two ends move separately. Each mass has one degree of freedom.</p>
+                    <p>A 3-DOF model represents three independent movements: the body can move up/down, and the two ends
+                        move separately. Each mass has one degree of freedom.</p>
                 </div>
-                
+
                 <div class="card">
                     <h4>Mass Matrix (M)</h4>
-                    <p>Represents the inertia of each component. Diagonal entries are masses (m₁, m₂, m₃). Heavier parts resist acceleration more.</p>
+                    <p>Represents the inertia of each component. Diagonal entries are masses (m₁, m₂, m₃). Heavier parts
+                        resist acceleration more.</p>
                 </div>
-                
+
                 <div class="card">
                     <h4>Stiffness Matrix (K)</h4>
-                    <p>Represents spring properties connecting the masses. It tells how much force is needed for a given displacement. Stiffer springs = larger values.</p>
+                    <p>Represents spring properties connecting the masses. It tells how much force is needed for a given
+                        displacement. Stiffer springs = larger values.</p>
                 </div>
 
                 <div class="card">
                     <h4>Damping Matrix (C)</h4>
-                    <p>Represents energy dissipation (shock absorbers). It controls how quickly vibrations die out. More damping = vibrations fade faster.</p>
+                    <p>Represents energy dissipation (shock absorbers). It controls how quickly vibrations die out. More
+                        damping = vibrations fade faster.</p>
                 </div>
             </div>
 
@@ -576,25 +702,32 @@
                 <p>This is the heart of vibration analysis:</p>
                 <div class="equation">M·ẍ + C·ẋ + K·x = F(t)</div>
                 <p style="margin-top: var(--spacing-md); font-size: 0.95rem;">
-                    <strong style="color: var(--accent-cream);">Where:</strong> M = mass matrix | C = damping matrix | K = stiffness matrix | ẍ = acceleration | ẋ = velocity | x = displacement | F(t) = external force
+                    <strong style="color: var(--accent-cream);">Where:</strong> M = mass matrix | C = damping matrix | K
+                    = stiffness matrix | ẍ = acceleration | ẋ = velocity | x = displacement | F(t) = external force
                 </p>
             </div>
 
             <div class="concept-box">
                 <h4>What is Diagonalisation?</h4>
                 <p>
-                    <strong>The Big Idea:</strong> The three masses in a suspension system are <em>coupled</em>—one mass's motion affects the others through springs and dampers. This makes the equations complex.
+                    <strong>The Big Idea:</strong> The three masses in a suspension system are <em>coupled</em>—one
+                    mass's motion affects the others through springs and dampers. This makes the equations complex.
                 </p>
                 <p>
-                    <strong>The Solution:</strong> Diagonalisation transforms these coupled equations into <strong>three independent equations</strong>. Each one describes a "mode shape"—a pattern of vibration that the whole system can exhibit naturally.
+                    <strong>The Solution:</strong> Diagonalisation transforms these coupled equations into <strong>three
+                        independent equations</strong>. Each one describes a "mode shape"—a pattern of vibration that
+                    the whole system can exhibit naturally.
                 </p>
                 <p style="margin-bottom: 0;">
-                    <strong>The Benefit:</strong> Instead of solving one complicated 3×3 system, we solve three simple 1×1 equations. We find <strong>natural frequencies</strong> (resonance points) and <strong>mode shapes</strong> (how the system moves).
+                    <strong>The Benefit:</strong> Instead of solving one complicated 3×3 system, we solve three simple
+                    1×1 equations. We find <strong>natural frequencies</strong> (resonance points) and <strong>mode
+                        shapes</strong> (how the system moves).
                 </p>
             </div>
 
             <!-- Enhanced 3-DOF System Diagram with premium styling -->
-            <div style="background-color: var(--dark-bg-secondary); padding: var(--spacing-xl); border-radius: var(--radius-xl); border: 2px solid var(--primary); margin-top: var(--spacing-xl); box-shadow: var(--shadow-md);">
+            <div
+                style="background-color: var(--dark-bg-secondary); padding: var(--spacing-xl); border-radius: var(--radius-xl); border: 2px solid var(--primary); margin-top: var(--spacing-xl); box-shadow: var(--shadow-md);">
                 <h4 style="text-align: center; margin-bottom: var(--spacing-xl);">3-DOF Suspension Model</h4>
                 <svg viewBox="0 0 500 400" width="100%" height="400">
                     <!-- Masses with enhanced gradients -->
@@ -612,38 +745,47 @@
                             <stop offset="100%" style="stop-color:#f59e0b;stop-opacity:0.6" />
                         </linearGradient>
                     </defs>
-                    
+
                     <!-- Masses -->
-                    <rect x="40" y="50" width="80" height="60" fill="url(#mass1Grad)" stroke="#34d399" stroke-width="2" rx="4"/>
-                    <text x="80" y="90" text-anchor="middle" fill="var(--accent-cream)" font-weight="bold" font-size="18">m₁</text>
-                    
-                    <rect x="210" y="150" width="80" height="60" fill="url(#mass2Grad)" stroke="#06d6d6" stroke-width="2" rx="4"/>
-                    <text x="250" y="190" text-anchor="middle" fill="var(--accent-cream)" font-weight="bold" font-size="18">m₂</text>
-                    
-                    <rect x="380" y="260" width="80" height="60" fill="url(#mass3Grad)" stroke="#fbbf24" stroke-width="2" rx="4"/>
-                    <text x="420" y="300" text-anchor="middle" fill="var(--dark-bg)" font-weight="bold" font-size="18">m₃</text>
-                    
+                    <rect x="40" y="50" width="80" height="60" fill="url(#mass1Grad)" stroke="#34d399" stroke-width="2"
+                        rx="4" />
+                    <text x="80" y="90" text-anchor="middle" fill="var(--accent-cream)" font-weight="bold"
+                        font-size="18">m₁</text>
+
+                    <rect x="210" y="150" width="80" height="60" fill="url(#mass2Grad)" stroke="#06d6d6"
+                        stroke-width="2" rx="4" />
+                    <text x="250" y="190" text-anchor="middle" fill="var(--accent-cream)" font-weight="bold"
+                        font-size="18">m₂</text>
+
+                    <rect x="380" y="260" width="80" height="60" fill="url(#mass3Grad)" stroke="#fbbf24"
+                        stroke-width="2" rx="4" />
+                    <text x="420" y="300" text-anchor="middle" fill="var(--dark-bg)" font-weight="bold"
+                        font-size="18">m₃</text>
+
                     <!-- Springs with coil visualization -->
-                    <path d="M 80 110 L 80 140" stroke="#34d399" stroke-width="2"/>
-                    <path d="M 85 145 L 75 155 L 85 165 L 75 175 L 85 185 L 75 195 L 85 205" fill="none" stroke="#34d399" stroke-width="2.5" stroke-linecap="round"/>
-                    <path d="M 80 210 L 80 250" stroke="#34d399" stroke-width="2"/>
-                    
-                    <path d="M 250 210 L 250 240" stroke="#06d6d6" stroke-width="2"/>
-                    <path d="M 255 245 L 245 255 L 255 265 L 245 275 L 255 285 L 245 295" fill="none" stroke="#06d6d6" stroke-width="2.5" stroke-linecap="round"/>
-                    <path d="M 250 310 L 250 350" stroke="#06d6d6" stroke-width="2"/>
-                    
+                    <path d="M 80 110 L 80 140" stroke="#34d399" stroke-width="2" />
+                    <path d="M 85 145 L 75 155 L 85 165 L 75 175 L 85 185 L 75 195 L 85 205" fill="none"
+                        stroke="#34d399" stroke-width="2.5" stroke-linecap="round" />
+                    <path d="M 80 210 L 80 250" stroke="#34d399" stroke-width="2" />
+
+                    <path d="M 250 210 L 250 240" stroke="#06d6d6" stroke-width="2" />
+                    <path d="M 255 245 L 245 255 L 255 265 L 245 275 L 255 285 L 245 295" fill="none" stroke="#06d6d6"
+                        stroke-width="2.5" stroke-linecap="round" />
+                    <path d="M 250 310 L 250 350" stroke="#06d6d6" stroke-width="2" />
+
                     <!-- Dampers (cylinders) -->
-                    <ellipse cx="100" cy="120" rx="8" ry="3" fill="none" stroke="#fbbf24" stroke-width="1.5"/>
-                    <rect x="92" y="120" width="16" height="30" fill="none" stroke="#fbbf24" stroke-width="1.5"/>
-                    <ellipse cx="100" cy="150" rx="8" ry="3" fill="none" stroke="#fbbf24" stroke-width="1.5"/>
-                    
-                    <ellipse cx="270" cy="220" rx="8" ry="3" fill="none" stroke="#fbbf24" stroke-width="1.5"/>
-                    <rect x="262" y="220" width="16" height="30" fill="none" stroke="#fbbf24" stroke-width="1.5"/>
-                    <ellipse cx="270" cy="250" rx="8" ry="3" fill="none" stroke="#fbbf24" stroke-width="1.5"/>
-                    
+                    <ellipse cx="100" cy="120" rx="8" ry="3" fill="none" stroke="#fbbf24" stroke-width="1.5" />
+                    <rect x="92" y="120" width="16" height="30" fill="none" stroke="#fbbf24" stroke-width="1.5" />
+                    <ellipse cx="100" cy="150" rx="8" ry="3" fill="none" stroke="#fbbf24" stroke-width="1.5" />
+
+                    <ellipse cx="270" cy="220" rx="8" ry="3" fill="none" stroke="#fbbf24" stroke-width="1.5" />
+                    <rect x="262" y="220" width="16" height="30" fill="none" stroke="#fbbf24" stroke-width="1.5" />
+                    <ellipse cx="270" cy="250" rx="8" ry="3" fill="none" stroke="#fbbf24" stroke-width="1.5" />
+
                     <!-- Ground -->
-                    <line x1="20" y1="350" x2="460" y2="350" stroke="#3a4556" stroke-width="3"/>
-                    <path d="M 30 350 L 25 360 M 45 350 L 40 360 M 60 350 L 55 360 M 75 350 L 70 360" stroke="#3a4556" stroke-width="1"/>
+                    <line x1="20" y1="350" x2="460" y2="350" stroke="#3a4556" stroke-width="3" />
+                    <path d="M 30 350 L 25 360 M 45 350 L 40 360 M 60 350 L 55 360 M 75 350 L 70 360" stroke="#3a4556"
+                        stroke-width="1" />
                 </svg>
             </div>
         </div>
@@ -653,8 +795,10 @@
     <section id="mode-explorer" class="section">
         <div class="container">
             <h2 style="text-align: center; margin-bottom: var(--spacing-xl);">Interactive Mode Explorer</h2>
-            <p style="text-align: center; margin-bottom: var(--spacing-2xl); max-width: 700px; margin-left: auto; margin-right: auto; color: var(--light-text);">
-                Click on each mode to see how the three masses vibrate together. Each mode represents a natural frequency of the suspension system.
+            <p
+                style="text-align: center; margin-bottom: var(--spacing-2xl); max-width: 700px; margin-left: auto; margin-right: auto; color: var(--light-text);">
+                Click on each mode to see how the three masses vibrate together. Each mode represents a natural
+                frequency of the suspension system.
             </p>
 
             <div class="mode-visualization">
@@ -663,7 +807,8 @@
                 </div>
             </div>
 
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: var(--spacing-lg); margin-bottom: var(--spacing-xl);">
+            <div
+                style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: var(--spacing-lg); margin-bottom: var(--spacing-xl);">
                 <button class="btn btn-secondary" onclick="displayMode(1)" style="justify-content: center;">
                     Mode 1 (Rigid Body)
                 </button>
@@ -675,65 +820,94 @@
                 </button>
             </div>
 
-            <div id="modeInfo" style="background-color: var(--dark-bg); padding: var(--spacing-lg); border-radius: var(--radius-lg); border: 1px solid var(--primary); text-align: center; color: var(--light-text);">
+            <div id="modeInfo"
+                style="background-color: var(--dark-bg); padding: var(--spacing-lg); border-radius: var(--radius-lg); border: 1px solid var(--primary); text-align: center; color: var(--light-text);">
                 <p><strong>Click a mode button above to start</strong></p>
             </div>
         </div>
     </section>
 
     <!-- ===== FREQUENCY CALCULATOR ===== -->
-    <section id="frequency" class="section" style="background-color: var(--dark-bg-secondary); border-bottom: 1px solid var(--dark-border);">
+    <section id="frequency" class="section"
+        style="background-color: var(--dark-bg-secondary); border-bottom: 1px solid var(--dark-border);">
         <div class="container" style="max-width: 800px;">
             <h2 style="text-align: center; margin-bottom: var(--spacing-xl);">Natural Frequency Calculator</h2>
-            
-            <div style="background-color: var(--dark-bg); padding: var(--spacing-xl); border-radius: var(--radius-xl); border: 1px solid var(--dark-border);">
-                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: var(--spacing-lg); margin-bottom: var(--spacing-xl);">
+
+            <div
+                style="background-color: var(--dark-bg); padding: var(--spacing-xl); border-radius: var(--radius-xl); border: 1px solid var(--dark-border);">
+                <div
+                    style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: var(--spacing-lg); margin-bottom: var(--spacing-xl);">
                     <div>
-                        <label style="display: block; margin-bottom: var(--spacing-sm); color: var(--primary-light); font-weight: 600;">m₁ (kg)</label>
-                        <input type="number" id="m1" value="1000" style="width: 100%; padding: var(--spacing-sm); border-radius: var(--radius-md); border: 1px solid var(--primary); background-color: var(--dark-bg-secondary); color: var(--dark-text);">
+                        <label
+                            style="display: block; margin-bottom: var(--spacing-sm); color: var(--primary-light); font-weight: 600;">m₁
+                            (kg)</label>
+                        <input type="number" id="m1" value="1000"
+                            style="width: 100%; padding: var(--spacing-sm); border-radius: var(--radius-md); border: 1px solid var(--primary); background-color: var(--dark-bg-secondary); color: var(--dark-text);">
                     </div>
                     <div>
-                        <label style="display: block; margin-bottom: var(--spacing-sm); color: var(--primary-light); font-weight: 600;">m₂ (kg)</label>
-                        <input type="number" id="m2" value="300" style="width: 100%; padding: var(--spacing-sm); border-radius: var(--radius-md); border: 1px solid var(--primary); background-color: var(--dark-bg-secondary); color: var(--dark-text);">
+                        <label
+                            style="display: block; margin-bottom: var(--spacing-sm); color: var(--primary-light); font-weight: 600;">m₂
+                            (kg)</label>
+                        <input type="number" id="m2" value="300"
+                            style="width: 100%; padding: var(--spacing-sm); border-radius: var(--radius-md); border: 1px solid var(--primary); background-color: var(--dark-bg-secondary); color: var(--dark-text);">
                     </div>
                     <div>
-                        <label style="display: block; margin-bottom: var(--spacing-sm); color: var(--primary-light); font-weight: 600;">m₃ (kg)</label>
-                        <input type="number" id="m3" value="300" style="width: 100%; padding: var(--spacing-sm); border-radius: var(--radius-md); border: 1px solid var(--primary); background-color: var(--dark-bg-secondary); color: var(--dark-text);">
+                        <label
+                            style="display: block; margin-bottom: var(--spacing-sm); color: var(--primary-light); font-weight: 600;">m₃
+                            (kg)</label>
+                        <input type="number" id="m3" value="300"
+                            style="width: 100%; padding: var(--spacing-sm); border-radius: var(--radius-md); border: 1px solid var(--primary); background-color: var(--dark-bg-secondary); color: var(--dark-text);">
                     </div>
                 </div>
 
-                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: var(--spacing-lg); margin-bottom: var(--spacing-xl);">
+                <div
+                    style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: var(--spacing-lg); margin-bottom: var(--spacing-xl);">
                     <div>
-                        <label style="display: block; margin-bottom: var(--spacing-sm); color: var(--accent-amber); font-weight: 600;">k₁ (N/m)</label>
-                        <input type="number" id="k1" value="35000" style="width: 100%; padding: var(--spacing-sm); border-radius: var(--radius-md); border: 1px solid var(--accent-amber); background-color: var(--dark-bg-secondary); color: var(--dark-text);">
+                        <label
+                            style="display: block; margin-bottom: var(--spacing-sm); color: var(--accent-amber); font-weight: 600;">k₁
+                            (N/m)</label>
+                        <input type="number" id="k1" value="35000"
+                            style="width: 100%; padding: var(--spacing-sm); border-radius: var(--radius-md); border: 1px solid var(--accent-amber); background-color: var(--dark-bg-secondary); color: var(--dark-text);">
                     </div>
                     <div>
-                        <label style="display: block; margin-bottom: var(--spacing-sm); color: var(--accent-amber); font-weight: 600;">k₂ (N/m)</label>
-                        <input type="number" id="k2" value="35000" style="width: 100%; padding: var(--spacing-sm); border-radius: var(--radius-md); border: 1px solid var(--accent-amber); background-color: var(--dark-bg-secondary); color: var(--dark-text);">
+                        <label
+                            style="display: block; margin-bottom: var(--spacing-sm); color: var(--accent-amber); font-weight: 600;">k₂
+                            (N/m)</label>
+                        <input type="number" id="k2" value="35000"
+                            style="width: 100%; padding: var(--spacing-sm); border-radius: var(--radius-md); border: 1px solid var(--accent-amber); background-color: var(--dark-bg-secondary); color: var(--dark-text);">
                     </div>
                     <div>
-                        <label style="display: block; margin-bottom: var(--spacing-sm); color: var(--accent-amber); font-weight: 600;">k₃ (N/m)</label>
-                        <input type="number" id="k3" value="35000" style="width: 100%; padding: var(--spacing-sm); border-radius: var(--radius-md); border: 1px solid var(--accent-amber); background-color: var(--dark-bg-secondary); color: var(--dark-text);">
+                        <label
+                            style="display: block; margin-bottom: var(--spacing-sm); color: var(--accent-amber); font-weight: 600;">k₃
+                            (N/m)</label>
+                        <input type="number" id="k3" value="35000"
+                            style="width: 100%; padding: var(--spacing-sm); border-radius: var(--radius-md); border: 1px solid var(--accent-amber); background-color: var(--dark-bg-secondary); color: var(--dark-text);">
                     </div>
                 </div>
 
-                <button class="btn btn-primary" onclick="calculateFrequencies()" style="width: 100%; justify-content: center;">
+                <button class="btn btn-primary" onclick="calculateFrequencies()"
+                    style="width: 100%; justify-content: center;">
                     Calculate Natural Frequencies
                 </button>
             </div>
 
             <div id="freqResults" style="margin-top: var(--spacing-xl); display: none;">
                 <h4 style="color: var(--primary-light); margin-bottom: var(--spacing-md);">Natural Frequencies:</h4>
-                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: var(--spacing-md);">
-                    <div style="background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(52, 211, 153, 0.05)); padding: var(--spacing-lg); border-radius: var(--radius-lg); border-left: 3px solid var(--primary);">
+                <div
+                    style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: var(--spacing-md);">
+                    <div
+                        style="background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(52, 211, 153, 0.05)); padding: var(--spacing-lg); border-radius: var(--radius-lg); border-left: 3px solid var(--primary);">
                         <p style="font-size: 0.9rem; color: var(--light-text);">f₁ (Low Freq)</p>
-                        <p style="font-size: 1.5rem; color: var(--primary-light); font-weight: bold;" id="f1Result">-</p>
+                        <p style="font-size: 1.5rem; color: var(--primary-light); font-weight: bold;" id="f1Result">-
+                        </p>
                     </div>
-                    <div style="background: linear-gradient(135deg, rgba(6, 214, 214, 0.1), rgba(6, 182, 182, 0.05)); padding: var(--spacing-lg); border-radius: var(--radius-lg); border-left: 3px solid var(--accent-cyan);">
+                    <div
+                        style="background: linear-gradient(135deg, rgba(6, 214, 214, 0.1), rgba(6, 182, 182, 0.05)); padding: var(--spacing-lg); border-radius: var(--radius-lg); border-left: 3px solid var(--accent-cyan);">
                         <p style="font-size: 0.9rem; color: var(--light-text);">f₂ (Mid Freq)</p>
                         <p style="font-size: 1.5rem; color: var(--accent-cyan); font-weight: bold;" id="f2Result">-</p>
                     </div>
-                    <div style="background: linear-gradient(135deg, rgba(251, 191, 36, 0.1), rgba(245, 158, 11, 0.05)); padding: var(--spacing-lg); border-radius: var(--radius-lg); border-left: 3px solid var(--accent-amber);">
+                    <div
+                        style="background: linear-gradient(135deg, rgba(251, 191, 36, 0.1), rgba(245, 158, 11, 0.05)); padding: var(--spacing-lg); border-radius: var(--radius-lg); border-left: 3px solid var(--accent-amber);">
                         <p style="font-size: 0.9rem; color: var(--light-text);">f₃ (High Freq)</p>
                         <p style="font-size: 1.5rem; color: var(--accent-amber); font-weight: bold;" id="f3Result">-</p>
                     </div>
@@ -751,7 +925,10 @@
                 <div class="concept-box">
                     <h4>Problem Statement</h4>
                     <p>
-                        Car suspension systems exhibit complex vibrational behavior. Understanding these vibrations is crucial for passenger comfort and vehicle safety. The challenge is to model a multi-degree-of-freedom (MDOF) system and extract natural frequencies and mode shapes using linear algebra.
+                        Car suspension systems exhibit complex vibrational behavior. Understanding these vibrations is
+                        crucial for passenger comfort and vehicle safety. The challenge is to model a
+                        multi-degree-of-freedom (MDOF) system and extract natural frequencies and mode shapes using
+                        linear algebra.
                     </p>
                 </div>
 
@@ -775,13 +952,16 @@
                         <strong>Step 2:</strong> Write equations of motion: M·ẍ + C·ẋ + K·x = F(t)
                     </p>
                     <p>
-                        <strong>Step 3:</strong> For free vibration analysis, assume x = X·e^(λt) and solve the eigenvalue problem: (K - λM)·X = 0
+                        <strong>Step 3:</strong> For free vibration analysis, assume x = X·e^(λt) and solve the
+                        eigenvalue problem: (K - λM)·X = 0
                     </p>
                     <p>
-                        <strong>Step 4:</strong> Extract eigenvalues (λ) and eigenvectors (X). Natural frequencies = √(λ/M). Eigenvectors represent mode shapes.
+                        <strong>Step 4:</strong> Extract eigenvalues (λ) and eigenvectors (X). Natural frequencies =
+                        √(λ/M). Eigenvectors represent mode shapes.
                     </p>
                     <p style="margin-bottom: 0;">
-                        <strong>Step 5:</strong> Visualize and interpret the modes to understand how the suspension responds to inputs.
+                        <strong>Step 5:</strong> Visualize and interpret the modes to understand how the suspension
+                        responds to inputs.
                     </p>
                 </div>
 
@@ -798,7 +978,11 @@
                 <div class="concept-box">
                     <h4>Conclusion</h4>
                     <p>
-                        This project demonstrates how diagonalisation transforms a complex coupled system into independent modal equations. By understanding the natural frequencies and mode shapes, engineers can design suspension systems that provide comfort while maintaining vehicle stability. The interactive visualization bridges the gap between theoretical mathematics and practical engineering applications.
+                        This project demonstrates how diagonalisation transforms a complex coupled system into
+                        independent modal equations. By understanding the natural frequencies and mode shapes, engineers
+                        can design suspension systems that provide comfort while maintaining vehicle stability. The
+                        interactive visualization bridges the gap between theoretical mathematics and practical
+                        engineering applications.
                     </p>
                 </div>
             </div>
@@ -806,10 +990,12 @@
     </section>
 
     <!-- ===== QUIZ SECTION ===== -->
-    <section id="quiz" class="section" style="background-color: var(--dark-bg-secondary); border-bottom: 1px solid var(--dark-border);">
+    <section id="quiz" class="section"
+        style="background-color: var(--dark-bg-secondary); border-bottom: 1px solid var(--dark-border);">
         <div class="container" style="max-width: 900px;">
             <h2 style="text-align: center; margin-bottom: var(--spacing-xl);">Check Your Understanding</h2>
-            <p style="text-align: center; margin-bottom: var(--spacing-xl); color: var(--light-text);">Test your knowledge of vibration analysis and diagonalisation.</p>
+            <p style="text-align: center; margin-bottom: var(--spacing-xl); color: var(--light-text);">Test your
+                knowledge of vibration analysis and diagonalisation.</p>
 
             <form id="quizForm" style="display: grid; gap: var(--spacing-xl);">
                 <!-- Question 1 -->
@@ -817,29 +1003,36 @@
                     <h4 style="margin-bottom: var(--spacing-md);">Q1: What does the mass matrix M represent?</h4>
                     <div style="display: grid; gap: var(--spacing-sm);">
                         <label style="display: flex; align-items: center; cursor: pointer; color: var(--light-text);">
-                            <input type="radio" name="q1" value="a" style="margin-right: var(--spacing-sm);"> The stiffness of springs
+                            <input type="radio" name="q1" value="a" style="margin-right: var(--spacing-sm);"> The
+                            stiffness of springs
                         </label>
                         <label style="display: flex; align-items: center; cursor: pointer; color: var(--light-text);">
-                            <input type="radio" name="q1" value="b" style="margin-right: var(--spacing-sm);"> The inertia (resistance to acceleration) of each mass
+                            <input type="radio" name="q1" value="b" style="margin-right: var(--spacing-sm);"> The
+                            inertia (resistance to acceleration) of each mass
                         </label>
                         <label style="display: flex; align-items: center; cursor: pointer; color: var(--light-text);">
-                            <input type="radio" name="q1" value="c" style="margin-right: var(--spacing-sm);"> The damping force
+                            <input type="radio" name="q1" value="c" style="margin-right: var(--spacing-sm);"> The
+                            damping force
                         </label>
                     </div>
                 </div>
 
                 <!-- Question 2 -->
                 <div class="card" style="background-color: var(--dark-bg);">
-                    <h4 style="margin-bottom: var(--spacing-md);">Q2: What is the primary benefit of diagonalisation?</h4>
+                    <h4 style="margin-bottom: var(--spacing-md);">Q2: What is the primary benefit of diagonalisation?
+                    </h4>
                     <div style="display: grid; gap: var(--spacing-sm);">
                         <label style="display: flex; align-items: center; cursor: pointer; color: var(--light-text);">
-                            <input type="radio" name="q2" value="a" style="margin-right: var(--spacing-sm);"> It makes the equations look prettier
+                            <input type="radio" name="q2" value="a" style="margin-right: var(--spacing-sm);"> It makes
+                            the equations look prettier
                         </label>
                         <label style="display: flex; align-items: center; cursor: pointer; color: var(--light-text);">
-                            <input type="radio" name="q2" value="b" style="margin-right: var(--spacing-sm);"> It transforms coupled equations into independent ones
+                            <input type="radio" name="q2" value="b" style="margin-right: var(--spacing-sm);"> It
+                            transforms coupled equations into independent ones
                         </label>
                         <label style="display: flex; align-items: center; cursor: pointer; color: var(--light-text);">
-                            <input type="radio" name="q2" value="c" style="margin-right: var(--spacing-sm);"> It eliminates the need for computers
+                            <input type="radio" name="q2" value="c" style="margin-right: var(--spacing-sm);"> It
+                            eliminates the need for computers
                         </label>
                     </div>
                 </div>
@@ -849,58 +1042,71 @@
                     <h4 style="margin-bottom: var(--spacing-md);">Q3: What is a mode shape?</h4>
                     <div style="display: grid; gap: var(--spacing-sm);">
                         <label style="display: flex; align-items: center; cursor: pointer; color: var(--light-text);">
-                            <input type="radio" name="q3" value="a" style="margin-right: var(--spacing-sm);"> The path a car takes when turning
+                            <input type="radio" name="q3" value="a" style="margin-right: var(--spacing-sm);"> The path a
+                            car takes when turning
                         </label>
                         <label style="display: flex; align-items: center; cursor: pointer; color: var(--light-text);">
-                            <input type="radio" name="q3" value="b" style="margin-right: var(--spacing-sm);"> A pattern of vibration where all masses move at the natural frequency
+                            <input type="radio" name="q3" value="b" style="margin-right: var(--spacing-sm);"> A pattern
+                            of vibration where all masses move at the natural frequency
                         </label>
                         <label style="display: flex; align-items: center; cursor: pointer; color: var(--light-text);">
-                            <input type="radio" name="q3" value="c" style="margin-right: var(--spacing-sm);"> The shape of the suspension springs
+                            <input type="radio" name="q3" value="c" style="margin-right: var(--spacing-sm);"> The shape
+                            of the suspension springs
                         </label>
                     </div>
                 </div>
 
                 <!-- Question 4 -->
                 <div class="card" style="background-color: var(--dark-bg);">
-                    <h4 style="margin-bottom: var(--spacing-md);">Q4: In the equation M·ẍ + C·ẋ + K·x = F(t), what does ẋ represent?</h4>
+                    <h4 style="margin-bottom: var(--spacing-md);">Q4: In the equation M·ẍ + C·ẋ + K·x = F(t), what does
+                        ẋ represent?</h4>
                     <div style="display: grid; gap: var(--spacing-sm);">
                         <label style="display: flex; align-items: center; cursor: pointer; color: var(--light-text);">
-                            <input type="radio" name="q4" value="a" style="margin-right: var(--spacing-sm);"> Acceleration
+                            <input type="radio" name="q4" value="a" style="margin-right: var(--spacing-sm);">
+                            Acceleration
                         </label>
                         <label style="display: flex; align-items: center; cursor: pointer; color: var(--light-text);">
                             <input type="radio" name="q4" value="b" style="margin-right: var(--spacing-sm);"> Velocity
                         </label>
                         <label style="display: flex; align-items: center; cursor: pointer; color: var(--light-text);">
-                            <input type="radio" name="q4" value="c" style="margin-right: var(--spacing-sm);"> Displacement
+                            <input type="radio" name="q4" value="c" style="margin-right: var(--spacing-sm);">
+                            Displacement
                         </label>
                     </div>
                 </div>
 
                 <!-- Question 5 -->
                 <div class="card" style="background-color: var(--dark-bg);">
-                    <h4 style="margin-bottom: var(--spacing-md);">Q5: Which matrix is responsible for energy dissipation in a suspension?</h4>
+                    <h4 style="margin-bottom: var(--spacing-md);">Q5: Which matrix is responsible for energy dissipation
+                        in a suspension?</h4>
                     <div style="display: grid; gap: var(--spacing-sm);">
                         <label style="display: flex; align-items: center; cursor: pointer; color: var(--light-text);">
-                            <input type="radio" name="q5" value="a" style="margin-right: var(--spacing-sm);"> Mass matrix (M)
+                            <input type="radio" name="q5" value="a" style="margin-right: var(--spacing-sm);"> Mass
+                            matrix (M)
                         </label>
                         <label style="display: flex; align-items: center; cursor: pointer; color: var(--light-text);">
-                            <input type="radio" name="q5" value="b" style="margin-right: var(--spacing-sm);"> Damping matrix (C)
+                            <input type="radio" name="q5" value="b" style="margin-right: var(--spacing-sm);"> Damping
+                            matrix (C)
                         </label>
                         <label style="display: flex; align-items: center; cursor: pointer; color: var(--light-text);">
-                            <input type="radio" name="q5" value="c" style="margin-right: var(--spacing-sm);"> Stiffness matrix (K)
+                            <input type="radio" name="q5" value="c" style="margin-right: var(--spacing-sm);"> Stiffness
+                            matrix (K)
                         </label>
                     </div>
                 </div>
 
-                <button type="button" class="btn btn-primary" onclick="submitQuiz()" style="width: 100%; justify-content: center; margin-top: var(--spacing-lg);">
+                <button type="button" class="btn btn-primary" onclick="submitQuiz()"
+                    style="width: 100%; justify-content: center; margin-top: var(--spacing-lg);">
                     Submit Quiz
                 </button>
             </form>
 
             <div id="quizResults" style="display: none; margin-top: var(--spacing-xl);">
-                <div style="background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(6, 214, 214, 0.1)); padding: var(--spacing-xl); border-radius: var(--radius-xl); border: 1px solid var(--primary); text-align: center;">
+                <div
+                    style="background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(6, 214, 214, 0.1)); padding: var(--spacing-xl); border-radius: var(--radius-xl); border: 1px solid var(--primary); text-align: center;">
                     <h4 style="color: var(--primary-light); margin-bottom: var(--spacing-md);">Your Score</h4>
-                    <p style="font-size: 2rem; color: var(--accent-cream); margin-bottom: var(--spacing-md);"><span id="scoreDisplay">0</span>/5</p>
+                    <p style="font-size: 2rem; color: var(--accent-cream); margin-bottom: var(--spacing-md);"><span
+                            id="scoreDisplay">0</span>/5</p>
                     <p id="resultMessage" style="color: var(--light-text); font-size: 1.1rem;"></p>
                 </div>
             </div>
@@ -908,13 +1114,17 @@
     </section>
 
     <!-- ===== FOOTER ===== -->
-    <footer id="footer" style="background-color: var(--dark-bg-secondary); padding: var(--spacing-xl) 0; border-top: 1px solid var(--dark-border);">
+    <footer id="footer"
+        style="background-color: var(--dark-bg-secondary); padding: var(--spacing-xl) 0; border-top: 1px solid var(--dark-border);">
         <div class="container">
             <div style="text-align: center; color: var(--light-text);">
-                <h4 style="margin-bottom: var(--spacing-md); color: var(--accent-cream);">Vibration Analysis of a Car Suspension System</h4>
-                <p style="margin-bottom: var(--spacing-sm);">Maths Experiential Learning Project | First-Year Engineering</p>
+                <h4 style="margin-bottom: var(--spacing-md); color: var(--accent-cream);">Vibration Analysis of a Car
+                    Suspension System</h4>
+                <p style="margin-bottom: var(--spacing-sm);">Maths Experiential Learning Project | First-Year
+                    Engineering</p>
                 <p style="font-size: 0.9rem; margin-bottom: var(--spacing-lg);">Built with HTML, CSS, and JavaScript</p>
-                <p style="font-size: 0.85rem; color: #888;">© 2025 Educational Vibration Analysis. All rights reserved.</p>
+                <p style="font-size: 0.85rem; color: #888;">© 2025 Educational Vibration Analysis. All rights reserved.
+                </p>
             </div>
         </div>
     </footer>
@@ -924,14 +1134,14 @@
         // ===================================
         // MODE EXPLORER FUNCTIONALITY
         // ===================================
-        
+
         // Updated mode shapes for the 3-mass system
         const modeShapes = {
             1: { values: [1, 1, 1], description: "Rigid body motion: all masses move up and down in phase." },
             2: { values: [0.8, 1.2, 0.6], description: "First bending mode: the middle mass moves more, with the outer masses lagging slightly." },
             3: { values: [1, -0.8, 0.6], description: "Second bending mode: outer masses move up while the middle mass moves down." }
         };
-        
+
         // Initial state for mode visualization
         const massSystem = document.getElementById('massSystem');
         const modeInfo = document.getElementById('modeInfo');
@@ -984,7 +1194,7 @@
                     springElements.push(springDiv);
                 }
             }
-            
+
             const ground = document.createElement('div');
             ground.style.position = 'absolute';
             ground.style.bottom = '0';
@@ -993,7 +1203,7 @@
             ground.style.height = '3px';
             ground.style.backgroundColor = 'var(--dark-border)';
             massSystem.appendChild(ground);
-            
+
             massSystem.style.display = 'flex';
             massSystem.style.flexDirection = 'column';
             massSystem.style.alignItems = 'center';
@@ -1035,10 +1245,10 @@
                             100% { transform: translateY(0px); }
                         }
                     `;
-                    
+
                     const styleSheet = document.styleSheets[0];
                     let ruleExists = false;
-                    for(let i = 0; i < styleSheet.cssRules.length; i++) {
+                    for (let i = 0; i < styleSheet.cssRules.length; i++) {
                         if (styleSheet.cssRules[i].name === `vibrate-${index}`) {
                             ruleExists = true;
                             break;
@@ -1050,7 +1260,7 @@
                 }, 10);
             });
         }
-        
+
         document.addEventListener('DOMContentLoaded', () => {
             createMassSystem();
         });
@@ -1058,7 +1268,7 @@
         // ===================================
         // FREQUENCY CALCULATOR FUNCTIONALITY
         // ===================================
-        
+
         function calculateFrequencies() {
             const m1 = parseFloat(document.getElementById('m1').value);
             const m2 = parseFloat(document.getElementById('m2').value);
@@ -1068,20 +1278,20 @@
             const k3 = parseFloat(document.getElementById('k3').value);
 
             const freq1 = Math.sqrt((k1 + k2 + k3) / (m1 + m2 + m3)) / (2 * Math.PI);
-            const freq2 = Math.sqrt((k1 / m1 + k2 / m2)) / (2 * Math.PI) * 1.5; 
+            const freq2 = Math.sqrt((k1 / m1 + k2 / m2)) / (2 * Math.PI) * 1.5;
             const freq3 = Math.sqrt((k2 / m2 + k3 / m3)) / (2 * Math.PI) * 2.0;
-            
+
             document.getElementById('f1Result').textContent = `${freq1.toFixed(2)} Hz`;
             document.getElementById('f2Result').textContent = `${freq2.toFixed(2)} Hz`;
             document.getElementById('f3Result').textContent = `${freq3.toFixed(2)} Hz`;
-            
+
             document.getElementById('freqResults').style.display = 'block';
         }
 
         // ===================================
         // QUIZ FUNCTIONALITY
         // ===================================
-        
+
         const quizAnswers = {
             q1: 'b',
             q2: 'b',
@@ -1098,20 +1308,38 @@
                 const qName = `q${i}`;
                 const selected = document.querySelector(`input[name="${qName}"]:checked`);
 
+                let feedbackElement = document.createElement('p');
+                feedbackElement.style.marginTop = 'var(--spacing-sm)';
+                feedbackElement.style.fontSize = '0.9rem';
+
                 if (!selected) {
+                    feedbackElement.textContent = 'Please select an answer.';
+                    feedbackElement.style.color = 'var(--primary-light)';
+                    const existingFeedback = document.querySelector(`#quizForm > div:nth-child(${i}) .card div[style*="margin-top"]`);
+                    if (existingFeedback) existingFeedback.remove();
+                    document.querySelector(`#quizForm > div:nth-child(${i}) .card > div`).appendChild(feedbackElement);
                     continue;
                 }
 
                 if (selected.value === quizAnswers[qName]) {
                     score++;
+                    feedbackElement.textContent = '✅ Correct!';
+                    feedbackElement.style.color = '#10b981';
+                } else {
+                    feedbackElement.textContent = '❌ Incorrect.';
+                    feedbackElement.style.color = '#fb7185';
                 }
+
+                const existingFeedback = document.querySelector(`#quizForm > div:nth-child(${i}) .card div[style*="margin-top"]`);
+                if (existingFeedback) existingFeedback.remove();
+                document.querySelector(`#quizForm > div:nth-child(${i}) .card > div`).appendChild(feedbackElement);
             }
 
             const resultsContainer = document.getElementById('quizResults');
             const scoreDisplay = document.getElementById('scoreDisplay');
             const resultMessage = document.getElementById('resultMessage');
 
-            scoreDisplay.textContent = `${score}`;
+            scoreDisplay.textContent = `${score}/${totalQuestions}`;
             let message = '';
             const percentage = (score / totalQuestions) * 100;
 
@@ -1130,4 +1358,5 @@
 
     </script>
 </body>
+
 </html>
