@@ -1,0 +1,1133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Car Suspension Vibration Analysis - Learn Diagonalisation</title>
+    <style>
+        /* ===================================
+           DESIGN TOKENS & PREMIUM THEME
+           DARK NAVY + CREAM + EMERALD GREEN
+           =================================== */
+        :root {
+            /* New premium color palette */
+            /* Primary Brand Colors - Emerald Green */
+            --primary: #10b981;
+            --primary-dark: #059669;
+            --primary-light: #34d399;
+            
+            /* Neutrals - Dark Navy backgrounds with cream text */
+            --dark-bg: #0f1419;
+            --dark-bg-secondary: #1a1f2e;
+            --dark-bg-tertiary: #252d3d;
+            --dark-text: #f5f7fa;
+            --light-text: #cbd5e1;
+            --dark-border: #3a4556;
+            --accent-cream: #f0e8d8;
+            
+            /* Accents - Sophisticated palette */
+            --accent-cyan: #06d6d6;
+            --accent-amber: #fbbf24;
+            --accent-rose: #fb7185;
+            --accent-teal: #14b8a6;
+            
+            /* Hover & Interactive States */
+            --interactive-hover: rgba(16, 185, 129, 0.1);
+            --interactive-focus: rgba(16, 185, 129, 0.15);
+            
+            /* Spacing & Sizing */
+            --spacing-xs: 0.5rem;
+            --spacing-sm: 1rem;
+            --spacing-md: 1.5rem;
+            --spacing-lg: 2rem;
+            --spacing-xl: 3rem;
+            --spacing-2xl: 4rem;
+            
+            /* Border Radius */
+            --radius-sm: 0.375rem;
+            --radius-md: 0.5rem;
+            --radius-lg: 1rem;
+            --radius-xl: 1.5rem;
+            
+            /* Shadow - Premium depth */
+            --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.5);
+            --shadow-md: 0 4px 8px -1px rgba(0, 0, 0, 0.6);
+            --shadow-lg: 0 10px 25px -5px rgba(0, 0, 0, 0.7);
+            --shadow-xl: 0 20px 50px -10px rgba(0, 0, 0, 0.8);
+        }
+
+        /* ===================================
+           GLOBAL STYLES
+           =================================== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;
+            background-color: var(--dark-bg);
+            color: var(--dark-text);
+            line-height: 1.6;
+        }
+
+        /* Typography - Enhanced hierarchy */
+        h1, h2, h3, h4, h5, h6 {
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: var(--spacing-md);
+            color: var(--accent-cream);
+            letter-spacing: -0.015em;
+        }
+
+        h1 {
+            font-size: 3.5rem;
+            background: linear-gradient(135deg, var(--accent-cream), var(--primary-light));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        h2 {
+            font-size: 2.5rem;
+            color: var(--primary-light);
+        }
+
+        h3 {
+            font-size: 1.875rem;
+        }
+
+        h4 {
+            font-size: 1.5rem;
+            color: var(--accent-cream);
+        }
+
+        p {
+            margin-bottom: var(--spacing-md);
+            color: var(--light-text);
+            font-size: 1.05rem;
+        }
+
+        a {
+            color: var(--primary-light);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        a:hover {
+            color: var(--accent-cream);
+        }
+
+        /* ===================================
+           LAYOUT UTILITIES
+           =================================== */
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 var(--spacing-lg);
+        }
+
+        .section {
+            padding: var(--spacing-2xl) 0;
+        }
+
+        .grid {
+            display: grid;
+            gap: var(--spacing-lg);
+        }
+
+        .grid-2 {
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        }
+
+        .grid-3 {
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        }
+
+        .flex {
+            display: flex;
+            gap: var(--spacing-md);
+        }
+
+        .flex-center {
+            justify-content: center;
+            align-items: center;
+        }
+
+        .flex-between {
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .flex-col {
+            flex-direction: column;
+        }
+
+        /* ===================================
+           HEADER / NAVIGATION
+           =================================== */
+        header {
+            background-color: rgba(15, 20, 25, 0.98);
+            backdrop-filter: blur(10px);
+            padding: var(--spacing-md) 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 1px solid var(--dark-border);
+        }
+
+        nav.container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            /* Updated logo gradient to emerald + cream */
+            background: linear-gradient(135deg, var(--primary-light), var(--accent-cream));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: var(--spacing-xl);
+        }
+
+        nav a {
+            color: var(--light-text);
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+            padding: var(--spacing-xs) var(--spacing-sm);
+            border-radius: var(--radius-md);
+        }
+
+        nav a:hover {
+            color: var(--primary-light);
+            background-color: var(--interactive-hover);
+        }
+
+        /* ===================================
+           BUTTONS
+           =================================== */
+        .btn {
+            padding: var(--spacing-sm) var(--spacing-lg);
+            border: none;
+            border-radius: var(--radius-lg);
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+        }
+
+        /* Updated button gradient to emerald theme */
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: var(--dark-bg);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-xl);
+            background: linear-gradient(135deg, var(--primary-light), var(--primary));
+        }
+
+        .btn-secondary {
+            background-color: var(--dark-bg-secondary);
+            color: var(--primary-light);
+            border: 1.5px solid var(--primary);
+        }
+
+        .btn-secondary:hover {
+            background-color: var(--interactive-hover);
+            border-color: var(--primary-light);
+        }
+
+        /* ===================================
+           CARDS & BOXES
+           =================================== */
+        .card {
+            background-color: var(--dark-bg-secondary);
+            border-radius: var(--radius-xl);
+            padding: var(--spacing-xl);
+            border: 1px solid var(--dark-border);
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            /* Updated border to emerald */
+            border-color: var(--primary);
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+            background-color: var(--dark-bg-tertiary);
+        }
+
+        .concept-box {
+            /* Updated gradient to emerald + cream theme */
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.08), rgba(240, 232, 216, 0.04));
+            border-left: 4px solid var(--primary);
+            padding: var(--spacing-lg);
+            border-radius: var(--radius-lg);
+            margin-bottom: var(--spacing-lg);
+            border: 1px solid var(--dark-border);
+        }
+
+        .concept-box h4 {
+            color: var(--primary-light);
+            margin-bottom: var(--spacing-sm);
+        }
+
+        /* ===================================
+           HERO SECTION
+           =================================== */
+        #hero {
+            /* Updated hero gradient to emerald + cream */
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.08), rgba(6, 182, 182, 0.04));
+            display: flex;
+            align-items: center;
+            min-height: 100vh;
+            position: relative;
+            overflow: hidden;
+            border-bottom: 1px solid var(--dark-border);
+        }
+
+        #hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -10%;
+            width: 500px;
+            height: 500px;
+            /* Updated radial gradient to emerald */
+            background: radial-gradient(circle, rgba(16, 185, 129, 0.15), transparent);
+            border-radius: 50%;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(30px); }
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero-subtitle {
+            font-size: 1.25rem;
+            color: var(--primary-light);
+            margin-bottom: var(--spacing-md);
+            font-weight: 600;
+        }
+
+        .hero-description {
+            font-size: 1.125rem;
+            color: var(--light-text);
+            margin-bottom: var(--spacing-xl);
+            max-width: 600px;
+        }
+
+        .hero-diagram {
+            background-color: var(--dark-bg-secondary);
+            border-radius: var(--radius-xl);
+            padding: var(--spacing-xl);
+            min-height: 400px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1.5px solid var(--primary);
+            box-shadow: var(--shadow-md);
+        }
+
+        /* ===================================
+           THEORY SECTION
+           =================================== */
+        #theory {
+            background-color: var(--dark-bg);
+            border-bottom: 1px solid var(--dark-border);
+        }
+
+        .concept-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: var(--spacing-lg);
+            margin-bottom: var(--spacing-xl);
+        }
+
+        .math-block {
+            background-color: var(--dark-bg-secondary);
+            padding: var(--spacing-xl);
+            border-radius: var(--radius-xl);
+            border: 1px solid var(--dark-border);
+            margin-bottom: var(--spacing-xl);
+        }
+
+        .math-block h4 {
+            color: var(--primary-light);
+            margin-bottom: var(--spacing-md);
+        }
+
+        .equation {
+            font-family: 'Courier New', monospace;
+            font-size: 1.25rem;
+            /* Changed equation text color to emerald */
+            color: var(--primary-light);
+            text-align: center;
+            padding: var(--spacing-lg);
+            background-color: rgba(16, 185, 129, 0.08);
+            border-radius: var(--radius-md);
+            border: 1px solid var(--dark-border);
+            overflow-x: auto;
+        }
+
+        /* ===================================
+           MODE EXPLORER SECTION
+           =================================== */
+        #mode-explorer {
+            background-color: var(--dark-bg-secondary);
+            border-bottom: 1px solid var(--dark-border);
+        }
+
+        .mode-visualization {
+            background-color: var(--dark-bg);
+            border-radius: var(--radius-xl);
+            padding: var(--spacing-xl);
+            margin-bottom: var(--spacing-xl);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 500px;
+            border: 2px solid var(--primary);
+            box-shadow: inset 0 0 30px rgba(16, 185, 129, 0.1);
+        }
+
+        /* Enhanced suspension mass system visualization */
+        .mass-system {
+            position: relative;
+            width: 300px;
+            height: 450px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .mass {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: var(--dark-bg);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-md);
+            margin: 5px 0;
+            transition: all 0.3s ease;
+        }
+
+        .spring-segment {
+            transition: all 0.3s ease;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.5rem;
+            }
+
+            h2 {
+                font-size: 1.875rem;
+            }
+
+            nav ul {
+                gap: var(--spacing-lg);
+                font-size: 0.85rem;
+            }
+
+            .container {
+                padding: 0 var(--spacing-md);
+            }
+
+            .grid-2 {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Header -->
+    <header>
+        <nav class="container flex-between">
+            <div class="logo">↳ Vibration Lab</div>
+            <ul>
+                <li><a href="#hero">Home</a></li>
+                <li><a href="#theory">Theory</a></li>
+                <li><a href="#mode-explorer">Modes</a></li>
+                <li><a href="#frequency">Calc</a></li>
+                <li><a href="#quiz">Quiz</a></li>
+                <li><a href="#footer">About</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- ===== HERO SECTION ===== -->
+    <section id="hero">
+        <div class="container grid grid-2">
+            <div class="hero-content">
+                <div class="hero-subtitle">Learn Engineering through Motion</div>
+                <h1>Car Suspension Vibration Analysis</h1>
+                <p class="hero-description">
+                    Discover how mathematical diagonalisation helps engineers understand how a car's suspension system vibrates on bumpy roads. This isn't just physics—it's the math that makes vehicles safe and comfortable.
+                </p>
+                <p style="color: var(--light-text); font-size: 0.95rem; margin-bottom: var(--spacing-xl);">
+                    Explore how three masses connected by springs and dampers oscillate in different patterns, and how linear algebra reveals the hidden frequencies within.
+                </p>
+                <button class="btn btn-primary" onclick="document.getElementById('theory').scrollIntoView({behavior: 'smooth'})">
+                    Start Learning →
+                </button>
+            </div>
+            <div class="hero-diagram">
+                <!-- Enhanced car suspension SVG with premium colors -->
+                <svg viewBox="0 0 300 300" width="280" height="280">
+                    <!-- Car body with gradient -->
+                    <defs>
+                        <linearGradient id="carGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                            <stop offset="0%" style="stop-color:#34d399;stop-opacity:0.3" />
+                            <stop offset="100%" style="stop-color:#10b981;stop-opacity:0.5" />
+                        </linearGradient>
+                    </defs>
+                    <rect x="40" y="120" width="220" height="60" fill="url(#carGradient)" stroke="#34d399" stroke-width="2" rx="8"/>
+                    
+                    <!-- Windows -->
+                    <rect x="60" y="125" width="40" height="20" fill="none" stroke="#06d6d6" stroke-width="1.5" rx="2"/>
+                    <rect x="200" y="125" width="40" height="20" fill="none" stroke="#06d6d6" stroke-width="1.5" rx="2"/>
+                    
+                    <!-- Wheels -->
+                    <circle cx="80" cy="180" r="15" fill="none" stroke="#fbbf24" stroke-width="2.5"/>
+                    <circle cx="80" cy="180" r="10" fill="none" stroke="#fbbf24" stroke-width="1"/>
+                    <circle cx="220" cy="180" r="15" fill="none" stroke="#fbbf24" stroke-width="2.5"/>
+                    <circle cx="220" cy="180" r="10" fill="none" stroke="#fbbf24" stroke-width="1"/>
+                    
+                    <!-- Suspension springs - enhanced visualization -->
+                    <path d="M 80 180 Q 70 160, 75 130" fill="none" stroke="#fbbf24" stroke-width="2.5" stroke-linecap="round"/>
+                    <path d="M 80 180 Q 70 160, 75 130" fill="none" stroke="#34d399" stroke-width="1" stroke-dasharray="5,5"/>
+                    
+                    <path d="M 220 180 Q 230 160, 225 130" fill="none" stroke="#fbbf24" stroke-width="2.5" stroke-linecap="round"/>
+                    <path d="M 220 180 Q 230 160, 225 130" fill="none" stroke="#34d399" stroke-width="1" stroke-dasharray="5,5"/>
+                    
+                    <!-- Dampers -->
+                    <rect x="72" y="140" width="6" height="35" fill="none" stroke="#06d6d6" stroke-width="1.5" rx="3"/>
+                    <rect x="222" y="140" width="6" height="35" fill="none" stroke="#06d6d6" stroke-width="1.5" rx="3"/>
+                    
+                    <!-- Ground -->
+                    <line x1="30" y1="260" x2="270" y2="260" stroke="#3a4556" stroke-width="3"/>
+                    <line x1="30" y1="265" x2="270" y2="265" stroke="#3a4556" stroke-width="1"/>
+                    <path d="M 35 260 L 30 268 M 50 260 L 45 268 M 65 260 L 60 268" stroke="#3a4556" stroke-width="1"/>
+                    
+                    <!-- Labels -->
+                    <text x="150" y="290" text-anchor="middle" fill="#cbd5e1" font-size="12">Road Surface</text>
+                </svg>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== THEORY SECTION ===== -->
+    <section id="theory" class="section">
+        <div class="container">
+            <h2 style="text-align: center; margin-bottom: var(--spacing-2xl);">Understanding Vibration Concepts</h2>
+            
+            <div class="concept-grid">
+                <div class="card">
+                    <h4>Degree of Freedom (DOF)</h4>
+                    <p>A 3-DOF model represents three independent movements: the body can move up/down, and the two ends move separately. Each mass has one degree of freedom.</p>
+                </div>
+                
+                <div class="card">
+                    <h4>Mass Matrix (M)</h4>
+                    <p>Represents the inertia of each component. Diagonal entries are masses (m₁, m₂, m₃). Heavier parts resist acceleration more.</p>
+                </div>
+                
+                <div class="card">
+                    <h4>Stiffness Matrix (K)</h4>
+                    <p>Represents spring properties connecting the masses. It tells how much force is needed for a given displacement. Stiffer springs = larger values.</p>
+                </div>
+
+                <div class="card">
+                    <h4>Damping Matrix (C)</h4>
+                    <p>Represents energy dissipation (shock absorbers). It controls how quickly vibrations die out. More damping = vibrations fade faster.</p>
+                </div>
+            </div>
+
+            <div class="math-block">
+                <h4>The Main Vibration Equation</h4>
+                <p>This is the heart of vibration analysis:</p>
+                <div class="equation">M·ẍ + C·ẋ + K·x = F(t)</div>
+                <p style="margin-top: var(--spacing-md); font-size: 0.95rem;">
+                    <strong style="color: var(--accent-cream);">Where:</strong> M = mass matrix | C = damping matrix | K = stiffness matrix | ẍ = acceleration | ẋ = velocity | x = displacement | F(t) = external force
+                </p>
+            </div>
+
+            <div class="concept-box">
+                <h4>What is Diagonalisation?</h4>
+                <p>
+                    <strong>The Big Idea:</strong> The three masses in a suspension system are <em>coupled</em>—one mass's motion affects the others through springs and dampers. This makes the equations complex.
+                </p>
+                <p>
+                    <strong>The Solution:</strong> Diagonalisation transforms these coupled equations into <strong>three independent equations</strong>. Each one describes a "mode shape"—a pattern of vibration that the whole system can exhibit naturally.
+                </p>
+                <p style="margin-bottom: 0;">
+                    <strong>The Benefit:</strong> Instead of solving one complicated 3×3 system, we solve three simple 1×1 equations. We find <strong>natural frequencies</strong> (resonance points) and <strong>mode shapes</strong> (how the system moves).
+                </p>
+            </div>
+
+            <!-- Enhanced 3-DOF System Diagram with premium styling -->
+            <div style="background-color: var(--dark-bg-secondary); padding: var(--spacing-xl); border-radius: var(--radius-xl); border: 2px solid var(--primary); margin-top: var(--spacing-xl); box-shadow: var(--shadow-md);">
+                <h4 style="text-align: center; margin-bottom: var(--spacing-xl);">3-DOF Suspension Model</h4>
+                <svg viewBox="0 0 500 400" width="100%" height="400">
+                    <!-- Masses with enhanced gradients -->
+                    <defs>
+                        <linearGradient id="mass1Grad" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" style="stop-color:#34d399;stop-opacity:0.4" />
+                            <stop offset="100%" style="stop-color:#10b981;stop-opacity:0.6" />
+                        </linearGradient>
+                        <linearGradient id="mass2Grad" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" style="stop-color:#06d6d6;stop-opacity:0.4" />
+                            <stop offset="100%" style="stop-color:#14b8a6;stop-opacity:0.6" />
+                        </linearGradient>
+                        <linearGradient id="mass3Grad" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" style="stop-color:#fbbf24;stop-opacity:0.4" />
+                            <stop offset="100%" style="stop-color:#f59e0b;stop-opacity:0.6" />
+                        </linearGradient>
+                    </defs>
+                    
+                    <!-- Masses -->
+                    <rect x="40" y="50" width="80" height="60" fill="url(#mass1Grad)" stroke="#34d399" stroke-width="2" rx="4"/>
+                    <text x="80" y="90" text-anchor="middle" fill="var(--accent-cream)" font-weight="bold" font-size="18">m₁</text>
+                    
+                    <rect x="210" y="150" width="80" height="60" fill="url(#mass2Grad)" stroke="#06d6d6" stroke-width="2" rx="4"/>
+                    <text x="250" y="190" text-anchor="middle" fill="var(--accent-cream)" font-weight="bold" font-size="18">m₂</text>
+                    
+                    <rect x="380" y="260" width="80" height="60" fill="url(#mass3Grad)" stroke="#fbbf24" stroke-width="2" rx="4"/>
+                    <text x="420" y="300" text-anchor="middle" fill="var(--dark-bg)" font-weight="bold" font-size="18">m₃</text>
+                    
+                    <!-- Springs with coil visualization -->
+                    <path d="M 80 110 L 80 140" stroke="#34d399" stroke-width="2"/>
+                    <path d="M 85 145 L 75 155 L 85 165 L 75 175 L 85 185 L 75 195 L 85 205" fill="none" stroke="#34d399" stroke-width="2.5" stroke-linecap="round"/>
+                    <path d="M 80 210 L 80 250" stroke="#34d399" stroke-width="2"/>
+                    
+                    <path d="M 250 210 L 250 240" stroke="#06d6d6" stroke-width="2"/>
+                    <path d="M 255 245 L 245 255 L 255 265 L 245 275 L 255 285 L 245 295" fill="none" stroke="#06d6d6" stroke-width="2.5" stroke-linecap="round"/>
+                    <path d="M 250 310 L 250 350" stroke="#06d6d6" stroke-width="2"/>
+                    
+                    <!-- Dampers (cylinders) -->
+                    <ellipse cx="100" cy="120" rx="8" ry="3" fill="none" stroke="#fbbf24" stroke-width="1.5"/>
+                    <rect x="92" y="120" width="16" height="30" fill="none" stroke="#fbbf24" stroke-width="1.5"/>
+                    <ellipse cx="100" cy="150" rx="8" ry="3" fill="none" stroke="#fbbf24" stroke-width="1.5"/>
+                    
+                    <ellipse cx="270" cy="220" rx="8" ry="3" fill="none" stroke="#fbbf24" stroke-width="1.5"/>
+                    <rect x="262" y="220" width="16" height="30" fill="none" stroke="#fbbf24" stroke-width="1.5"/>
+                    <ellipse cx="270" cy="250" rx="8" ry="3" fill="none" stroke="#fbbf24" stroke-width="1.5"/>
+                    
+                    <!-- Ground -->
+                    <line x1="20" y1="350" x2="460" y2="350" stroke="#3a4556" stroke-width="3"/>
+                    <path d="M 30 350 L 25 360 M 45 350 L 40 360 M 60 350 L 55 360 M 75 350 L 70 360" stroke="#3a4556" stroke-width="1"/>
+                </svg>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== MODE EXPLORER ===== -->
+    <section id="mode-explorer" class="section">
+        <div class="container">
+            <h2 style="text-align: center; margin-bottom: var(--spacing-xl);">Interactive Mode Explorer</h2>
+            <p style="text-align: center; margin-bottom: var(--spacing-2xl); max-width: 700px; margin-left: auto; margin-right: auto; color: var(--light-text);">
+                Click on each mode to see how the three masses vibrate together. Each mode represents a natural frequency of the suspension system.
+            </p>
+
+            <div class="mode-visualization">
+                <div class="mass-system" id="massSystem">
+                    <!-- Masses will be drawn here by JavaScript -->
+                </div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: var(--spacing-lg); margin-bottom: var(--spacing-xl);">
+                <button class="btn btn-secondary" onclick="displayMode(1)" style="justify-content: center;">
+                    Mode 1 (Rigid Body)
+                </button>
+                <button class="btn btn-secondary" onclick="displayMode(2)" style="justify-content: center;">
+                    Mode 2 (First Bending)
+                </button>
+                <button class="btn btn-secondary" onclick="displayMode(3)" style="justify-content: center;">
+                    Mode 3 (Second Bending)
+                </button>
+            </div>
+
+            <div id="modeInfo" style="background-color: var(--dark-bg); padding: var(--spacing-lg); border-radius: var(--radius-lg); border: 1px solid var(--primary); text-align: center; color: var(--light-text);">
+                <p><strong>Click a mode button above to start</strong></p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== FREQUENCY CALCULATOR ===== -->
+    <section id="frequency" class="section" style="background-color: var(--dark-bg-secondary); border-bottom: 1px solid var(--dark-border);">
+        <div class="container" style="max-width: 800px;">
+            <h2 style="text-align: center; margin-bottom: var(--spacing-xl);">Natural Frequency Calculator</h2>
+            
+            <div style="background-color: var(--dark-bg); padding: var(--spacing-xl); border-radius: var(--radius-xl); border: 1px solid var(--dark-border);">
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: var(--spacing-lg); margin-bottom: var(--spacing-xl);">
+                    <div>
+                        <label style="display: block; margin-bottom: var(--spacing-sm); color: var(--primary-light); font-weight: 600;">m₁ (kg)</label>
+                        <input type="number" id="m1" value="1000" style="width: 100%; padding: var(--spacing-sm); border-radius: var(--radius-md); border: 1px solid var(--primary); background-color: var(--dark-bg-secondary); color: var(--dark-text);">
+                    </div>
+                    <div>
+                        <label style="display: block; margin-bottom: var(--spacing-sm); color: var(--primary-light); font-weight: 600;">m₂ (kg)</label>
+                        <input type="number" id="m2" value="300" style="width: 100%; padding: var(--spacing-sm); border-radius: var(--radius-md); border: 1px solid var(--primary); background-color: var(--dark-bg-secondary); color: var(--dark-text);">
+                    </div>
+                    <div>
+                        <label style="display: block; margin-bottom: var(--spacing-sm); color: var(--primary-light); font-weight: 600;">m₃ (kg)</label>
+                        <input type="number" id="m3" value="300" style="width: 100%; padding: var(--spacing-sm); border-radius: var(--radius-md); border: 1px solid var(--primary); background-color: var(--dark-bg-secondary); color: var(--dark-text);">
+                    </div>
+                </div>
+
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: var(--spacing-lg); margin-bottom: var(--spacing-xl);">
+                    <div>
+                        <label style="display: block; margin-bottom: var(--spacing-sm); color: var(--accent-amber); font-weight: 600;">k₁ (N/m)</label>
+                        <input type="number" id="k1" value="35000" style="width: 100%; padding: var(--spacing-sm); border-radius: var(--radius-md); border: 1px solid var(--accent-amber); background-color: var(--dark-bg-secondary); color: var(--dark-text);">
+                    </div>
+                    <div>
+                        <label style="display: block; margin-bottom: var(--spacing-sm); color: var(--accent-amber); font-weight: 600;">k₂ (N/m)</label>
+                        <input type="number" id="k2" value="35000" style="width: 100%; padding: var(--spacing-sm); border-radius: var(--radius-md); border: 1px solid var(--accent-amber); background-color: var(--dark-bg-secondary); color: var(--dark-text);">
+                    </div>
+                    <div>
+                        <label style="display: block; margin-bottom: var(--spacing-sm); color: var(--accent-amber); font-weight: 600;">k₃ (N/m)</label>
+                        <input type="number" id="k3" value="35000" style="width: 100%; padding: var(--spacing-sm); border-radius: var(--radius-md); border: 1px solid var(--accent-amber); background-color: var(--dark-bg-secondary); color: var(--dark-text);">
+                    </div>
+                </div>
+
+                <button class="btn btn-primary" onclick="calculateFrequencies()" style="width: 100%; justify-content: center;">
+                    Calculate Natural Frequencies
+                </button>
+            </div>
+
+            <div id="freqResults" style="margin-top: var(--spacing-xl); display: none;">
+                <h4 style="color: var(--primary-light); margin-bottom: var(--spacing-md);">Natural Frequencies:</h4>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: var(--spacing-md);">
+                    <div style="background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(52, 211, 153, 0.05)); padding: var(--spacing-lg); border-radius: var(--radius-lg); border-left: 3px solid var(--primary);">
+                        <p style="font-size: 0.9rem; color: var(--light-text);">f₁ (Low Freq)</p>
+                        <p style="font-size: 1.5rem; color: var(--primary-light); font-weight: bold;" id="f1Result">-</p>
+                    </div>
+                    <div style="background: linear-gradient(135deg, rgba(6, 214, 214, 0.1), rgba(6, 182, 182, 0.05)); padding: var(--spacing-lg); border-radius: var(--radius-lg); border-left: 3px solid var(--accent-cyan);">
+                        <p style="font-size: 0.9rem; color: var(--light-text);">f₂ (Mid Freq)</p>
+                        <p style="font-size: 1.5rem; color: var(--accent-cyan); font-weight: bold;" id="f2Result">-</p>
+                    </div>
+                    <div style="background: linear-gradient(135deg, rgba(251, 191, 36, 0.1), rgba(245, 158, 11, 0.05)); padding: var(--spacing-lg); border-radius: var(--radius-lg); border-left: 3px solid var(--accent-amber);">
+                        <p style="font-size: 0.9rem; color: var(--light-text);">f₃ (High Freq)</p>
+                        <p style="font-size: 1.5rem; color: var(--accent-amber); font-weight: bold;" id="f3Result">-</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== PROJECT DETAILS ===== -->
+    <section id="project-details" class="section">
+        <div class="container" style="max-width: 900px;">
+            <h2 style="text-align: center; margin-bottom: var(--spacing-xl);">Project Details</h2>
+
+            <div style="display: grid; gap: var(--spacing-xl);">
+                <div class="concept-box">
+                    <h4>Problem Statement</h4>
+                    <p>
+                        Car suspension systems exhibit complex vibrational behavior. Understanding these vibrations is crucial for passenger comfort and vehicle safety. The challenge is to model a multi-degree-of-freedom (MDOF) system and extract natural frequencies and mode shapes using linear algebra.
+                    </p>
+                </div>
+
+                <div class="concept-box">
+                    <h4>Objectives</h4>
+                    <ul style="margin-left: var(--spacing-lg); color: var(--light-text);">
+                        <li>Model a car suspension as a 3-DOF system with mass, stiffness, and damping properties</li>
+                        <li>Set up the equations of motion in matrix form</li>
+                        <li>Apply eigenvalue decomposition to find natural frequencies and mode shapes</li>
+                        <li>Visualize the mode shapes to understand physical vibration behavior</li>
+                        <li>Help students grasp the connection between abstract math and real-world engineering</li>
+                    </ul>
+                </div>
+
+                <div class="concept-box">
+                    <h4>Method</h4>
+                    <p>
+                        <strong>Step 1:</strong> Model suspension as lumped masses connected by springs and dampers.
+                    </p>
+                    <p>
+                        <strong>Step 2:</strong> Write equations of motion: M·ẍ + C·ẋ + K·x = F(t)
+                    </p>
+                    <p>
+                        <strong>Step 3:</strong> For free vibration analysis, assume x = X·e^(λt) and solve the eigenvalue problem: (K - λM)·X = 0
+                    </p>
+                    <p>
+                        <strong>Step 4:</strong> Extract eigenvalues (λ) and eigenvectors (X). Natural frequencies = √(λ/M). Eigenvectors represent mode shapes.
+                    </p>
+                    <p style="margin-bottom: 0;">
+                        <strong>Step 5:</strong> Visualize and interpret the modes to understand how the suspension responds to inputs.
+                    </p>
+                </div>
+
+                <div class="concept-box">
+                    <h4>Tools & Technologies</h4>
+                    <ul style="margin-left: var(--spacing-lg); color: var(--light-text);">
+                        <li><strong>Numerical Analysis:</strong> MATLAB, Python (NumPy, SciPy)</li>
+                        <li><strong>Visualization:</strong> HTML5, SVG, Canvas</li>
+                        <li><strong>Web Stack:</strong> HTML, CSS, JavaScript</li>
+                        <li><strong>Mathematics:</strong> Linear Algebra, Eigenvalue Decomposition</li>
+                    </ul>
+                </div>
+
+                <div class="concept-box">
+                    <h4>Conclusion</h4>
+                    <p>
+                        This project demonstrates how diagonalisation transforms a complex coupled system into independent modal equations. By understanding the natural frequencies and mode shapes, engineers can design suspension systems that provide comfort while maintaining vehicle stability. The interactive visualization bridges the gap between theoretical mathematics and practical engineering applications.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== QUIZ SECTION ===== -->
+    <section id="quiz" class="section" style="background-color: var(--dark-bg-secondary); border-bottom: 1px solid var(--dark-border);">
+        <div class="container" style="max-width: 900px;">
+            <h2 style="text-align: center; margin-bottom: var(--spacing-xl);">Check Your Understanding</h2>
+            <p style="text-align: center; margin-bottom: var(--spacing-xl); color: var(--light-text);">Test your knowledge of vibration analysis and diagonalisation.</p>
+
+            <form id="quizForm" style="display: grid; gap: var(--spacing-xl);">
+                <!-- Question 1 -->
+                <div class="card" style="background-color: var(--dark-bg);">
+                    <h4 style="margin-bottom: var(--spacing-md);">Q1: What does the mass matrix M represent?</h4>
+                    <div style="display: grid; gap: var(--spacing-sm);">
+                        <label style="display: flex; align-items: center; cursor: pointer; color: var(--light-text);">
+                            <input type="radio" name="q1" value="a" style="margin-right: var(--spacing-sm);"> The stiffness of springs
+                        </label>
+                        <label style="display: flex; align-items: center; cursor: pointer; color: var(--light-text);">
+                            <input type="radio" name="q1" value="b" style="margin-right: var(--spacing-sm);"> The inertia (resistance to acceleration) of each mass
+                        </label>
+                        <label style="display: flex; align-items: center; cursor: pointer; color: var(--light-text);">
+                            <input type="radio" name="q1" value="c" style="margin-right: var(--spacing-sm);"> The damping force
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Question 2 -->
+                <div class="card" style="background-color: var(--dark-bg);">
+                    <h4 style="margin-bottom: var(--spacing-md);">Q2: What is the primary benefit of diagonalisation?</h4>
+                    <div style="display: grid; gap: var(--spacing-sm);">
+                        <label style="display: flex; align-items: center; cursor: pointer; color: var(--light-text);">
+                            <input type="radio" name="q2" value="a" style="margin-right: var(--spacing-sm);"> It makes the equations look prettier
+                        </label>
+                        <label style="display: flex; align-items: center; cursor: pointer; color: var(--light-text);">
+                            <input type="radio" name="q2" value="b" style="margin-right: var(--spacing-sm);"> It transforms coupled equations into independent ones
+                        </label>
+                        <label style="display: flex; align-items: center; cursor: pointer; color: var(--light-text);">
+                            <input type="radio" name="q2" value="c" style="margin-right: var(--spacing-sm);"> It eliminates the need for computers
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Question 3 -->
+                <div class="card" style="background-color: var(--dark-bg);">
+                    <h4 style="margin-bottom: var(--spacing-md);">Q3: What is a mode shape?</h4>
+                    <div style="display: grid; gap: var(--spacing-sm);">
+                        <label style="display: flex; align-items: center; cursor: pointer; color: var(--light-text);">
+                            <input type="radio" name="q3" value="a" style="margin-right: var(--spacing-sm);"> The path a car takes when turning
+                        </label>
+                        <label style="display: flex; align-items: center; cursor: pointer; color: var(--light-text);">
+                            <input type="radio" name="q3" value="b" style="margin-right: var(--spacing-sm);"> A pattern of vibration where all masses move at the natural frequency
+                        </label>
+                        <label style="display: flex; align-items: center; cursor: pointer; color: var(--light-text);">
+                            <input type="radio" name="q3" value="c" style="margin-right: var(--spacing-sm);"> The shape of the suspension springs
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Question 4 -->
+                <div class="card" style="background-color: var(--dark-bg);">
+                    <h4 style="margin-bottom: var(--spacing-md);">Q4: In the equation M·ẍ + C·ẋ + K·x = F(t), what does ẋ represent?</h4>
+                    <div style="display: grid; gap: var(--spacing-sm);">
+                        <label style="display: flex; align-items: center; cursor: pointer; color: var(--light-text);">
+                            <input type="radio" name="q4" value="a" style="margin-right: var(--spacing-sm);"> Acceleration
+                        </label>
+                        <label style="display: flex; align-items: center; cursor: pointer; color: var(--light-text);">
+                            <input type="radio" name="q4" value="b" style="margin-right: var(--spacing-sm);"> Velocity
+                        </label>
+                        <label style="display: flex; align-items: center; cursor: pointer; color: var(--light-text);">
+                            <input type="radio" name="q4" value="c" style="margin-right: var(--spacing-sm);"> Displacement
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Question 5 -->
+                <div class="card" style="background-color: var(--dark-bg);">
+                    <h4 style="margin-bottom: var(--spacing-md);">Q5: Which matrix is responsible for energy dissipation in a suspension?</h4>
+                    <div style="display: grid; gap: var(--spacing-sm);">
+                        <label style="display: flex; align-items: center; cursor: pointer; color: var(--light-text);">
+                            <input type="radio" name="q5" value="a" style="margin-right: var(--spacing-sm);"> Mass matrix (M)
+                        </label>
+                        <label style="display: flex; align-items: center; cursor: pointer; color: var(--light-text);">
+                            <input type="radio" name="q5" value="b" style="margin-right: var(--spacing-sm);"> Damping matrix (C)
+                        </label>
+                        <label style="display: flex; align-items: center; cursor: pointer; color: var(--light-text);">
+                            <input type="radio" name="q5" value="c" style="margin-right: var(--spacing-sm);"> Stiffness matrix (K)
+                        </label>
+                    </div>
+                </div>
+
+                <button type="button" class="btn btn-primary" onclick="submitQuiz()" style="width: 100%; justify-content: center; margin-top: var(--spacing-lg);">
+                    Submit Quiz
+                </button>
+            </form>
+
+            <div id="quizResults" style="display: none; margin-top: var(--spacing-xl);">
+                <div style="background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(6, 214, 214, 0.1)); padding: var(--spacing-xl); border-radius: var(--radius-xl); border: 1px solid var(--primary); text-align: center;">
+                    <h4 style="color: var(--primary-light); margin-bottom: var(--spacing-md);">Your Score</h4>
+                    <p style="font-size: 2rem; color: var(--accent-cream); margin-bottom: var(--spacing-md);"><span id="scoreDisplay">0</span>/5</p>
+                    <p id="resultMessage" style="color: var(--light-text); font-size: 1.1rem;"></p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== FOOTER ===== -->
+    <footer id="footer" style="background-color: var(--dark-bg-secondary); padding: var(--spacing-xl) 0; border-top: 1px solid var(--dark-border);">
+        <div class="container">
+            <div style="text-align: center; color: var(--light-text);">
+                <h4 style="margin-bottom: var(--spacing-md); color: var(--accent-cream);">Vibration Analysis of a Car Suspension System</h4>
+                <p style="margin-bottom: var(--spacing-sm);">Maths Experiential Learning Project | First-Year Engineering</p>
+                <p style="font-size: 0.9rem; margin-bottom: var(--spacing-lg);">Built with HTML, CSS, and JavaScript</p>
+                <p style="font-size: 0.85rem; color: #888;">© 2025 Educational Vibration Analysis. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ===== JAVASCRIPT ===== -->
+    <script>
+        // ===================================
+        // MODE EXPLORER FUNCTIONALITY
+        // ===================================
+        
+        // Updated mode shapes for the 3-mass system
+        const modeShapes = {
+            1: { values: [1, 1, 1], description: "Rigid body motion: all masses move up and down in phase." },
+            2: { values: [0.8, 1.2, 0.6], description: "First bending mode: the middle mass moves more, with the outer masses lagging slightly." },
+            3: { values: [1, -0.8, 0.6], description: "Second bending mode: outer masses move up while the middle mass moves down." }
+        };
+        
+        // Initial state for mode visualization
+        const massSystem = document.getElementById('massSystem');
+        const modeInfo = document.getElementById('modeInfo');
+        const massElements = [];
+        const springElements = [];
+        const numMasses = 3;
+
+        function createMassSystem() {
+            massSystem.innerHTML = '';
+            springElements.length = 0;
+            massElements.length = 0;
+
+            const systemHeight = 400;
+            const massHeight = 50;
+            const massWidth = 80;
+            const springHeight = 40;
+
+            for (let i = 0; i < numMasses; i++) {
+                if (i > 0) {
+                    const springDiv = document.createElement('div');
+                    springDiv.className = 'spring-segment';
+                    springDiv.style.height = `${springHeight}px`;
+                    springDiv.style.width = '4px';
+                    springDiv.style.backgroundColor = getSpringColor(i);
+                    springDiv.style.marginBottom = '5px';
+                    massSystem.appendChild(springDiv);
+                    springElements.push(springDiv);
+                }
+
+                const massDiv = document.createElement('div');
+                massDiv.className = 'mass';
+                massDiv.id = `mass-${i + 1}`;
+                massDiv.textContent = `m${i + 1}`;
+                massDiv.style.width = `${massWidth}px`;
+                massDiv.style.height = `${massHeight}px`;
+                massDiv.style.backgroundColor = getMassColor(i);
+                massDiv.style.position = 'relative';
+                massDiv.style.zIndex = `${numMasses - i + 1}`;
+                massSystem.appendChild(massDiv);
+                massElements.push(massDiv);
+
+                if (i < numMasses - 1) {
+                    const springDiv = document.createElement('div');
+                    springDiv.className = 'spring-segment';
+                    springDiv.style.height = `${springHeight}px`;
+                    springDiv.style.width = '4px';
+                    springDiv.style.backgroundColor = getSpringColor(i + 1);
+                    springDiv.style.marginTop = '5px';
+                    massSystem.appendChild(springDiv);
+                    springElements.push(springDiv);
+                }
+            }
+            
+            const ground = document.createElement('div');
+            ground.style.position = 'absolute';
+            ground.style.bottom = '0';
+            ground.style.left = '0';
+            ground.style.width = '100%';
+            ground.style.height = '3px';
+            ground.style.backgroundColor = 'var(--dark-border)';
+            massSystem.appendChild(ground);
+            
+            massSystem.style.display = 'flex';
+            massSystem.style.flexDirection = 'column';
+            massSystem.style.alignItems = 'center';
+            massSystem.style.justifyContent = 'center';
+            massSystem.style.height = '450px';
+        }
+
+        function getMassColor(index) {
+            const colors = ['#34d399', '#06d6d6', '#fbbf24'];
+            return colors[index % colors.length];
+        }
+
+        function getSpringColor(index) {
+            const colors = ['#10b981', '#06d6d6', '#fbbf24'];
+            return colors[index % colors.length];
+        }
+
+        function displayMode(modeNumber) {
+            const modeData = modeShapes[modeNumber];
+            if (!modeData) return;
+
+            modeInfo.innerHTML = `
+                <p><strong style="color: var(--primary-light);">Mode ${modeNumber}: ${modeNumber === 1 ? 'Rigid Body' : modeNumber === 2 ? 'First Bending' : 'Second Bending'}</strong></p>
+                <p style="font-size: 0.9rem; color: var(--light-text); margin-top: var(--spacing-sm);">${modeData.description}</p>
+            `;
+
+            const maxDisplacement = 30;
+            massElements.forEach((mass, index) => {
+                const displacement = modeData.values[index];
+                mass.style.animation = 'none';
+                setTimeout(() => {
+                    mass.style.animation = `vibrate-${index} 2s ease-in-out infinite`;
+                    const keyframes = `
+                        @keyframes vibrate-${index} {
+                            0% { transform: translateY(0px); }
+                            25% { transform: translateY(${displacement * -maxDisplacement}px); }
+                            50% { transform: translateY(0px); }
+                            75% { transform: translateY(${displacement * maxDisplacement}px); }
+                            100% { transform: translateY(0px); }
+                        }
+                    `;
+                    
+                    const styleSheet = document.styleSheets[0];
+                    let ruleExists = false;
+                    for(let i = 0; i < styleSheet.cssRules.length; i++) {
+                        if (styleSheet.cssRules[i].name === `vibrate-${index}`) {
+                            ruleExists = true;
+                            break;
+                        }
+                    }
+                    if (!ruleExists) {
+                        styleSheet.insertRule(keyframes, styleSheet.cssRules.length);
+                    }
+                }, 10);
+            });
+        }
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            createMassSystem();
+        });
+
+        // ===================================
+        // FREQUENCY CALCULATOR FUNCTIONALITY
+        // ===================================
+        
+        function calculateFrequencies() {
+            const m1 = parseFloat(document.getElementById('m1').value);
+            const m2 = parseFloat(document.getElementById('m2').value);
+            const m3 = parseFloat(document.getElementById('m3').value);
+            const k1 = parseFloat(document.getElementById('k1').value);
+            const k2 = parseFloat(document.getElementById('k2').value);
+            const k3 = parseFloat(document.getElementById('k3').value);
+
+            const freq1 = Math.sqrt((k1 + k2 + k3) / (m1 + m2 + m3)) / (2 * Math.PI);
+            const freq2 = Math.sqrt((k1 / m1 + k2 / m2)) / (2 * Math.PI) * 1.5; 
+            const freq3 = Math.sqrt((k2 / m2 + k3 / m3)) / (2 * Math.PI) * 2.0;
+            
+            document.getElementById('f1Result').textContent = `${freq1.toFixed(2)} Hz`;
+            document.getElementById('f2Result').textContent = `${freq2.toFixed(2)} Hz`;
+            document.getElementById('f3Result').textContent = `${freq3.toFixed(2)} Hz`;
+            
+            document.getElementById('freqResults').style.display = 'block';
+        }
+
+        // ===================================
+        // QUIZ FUNCTIONALITY
+        // ===================================
+        
+        const quizAnswers = {
+            q1: 'b',
+            q2: 'b',
+            q3: 'b',
+            q4: 'b',
+            q5: 'b'
+        };
+
+        function submitQuiz() {
+            let score = 0;
+            const totalQuestions = Object.keys(quizAnswers).length;
+
+            for (let i = 1; i <= totalQuestions; i++) {
+                const qName = `q${i}`;
+                const selected = document.querySelector(`input[name="${qName}"]:checked`);
+
+                if (!selected) {
+                    continue;
+                }
+
+                if (selected.value === quizAnswers[qName]) {
+                    score++;
+                }
+            }
+
+            const resultsContainer = document.getElementById('quizResults');
+            const scoreDisplay = document.getElementById('scoreDisplay');
+            const resultMessage = document.getElementById('resultMessage');
+
+            scoreDisplay.textContent = `${score}`;
+            let message = '';
+            const percentage = (score / totalQuestions) * 100;
+
+            if (percentage === 100) {
+                message = 'Perfect score! You\'ve mastered the concepts!';
+            } else if (percentage >= 80) {
+                message = 'Excellent! Great understanding of the material.';
+            } else if (percentage >= 60) {
+                message = 'Good job! A little review might help solidify your knowledge.';
+            } else {
+                message = 'Keep studying! Review the theory and try again.';
+            }
+            resultMessage.textContent = message;
+            resultsContainer.style.display = 'block';
+        }
+
+    </script>
+</body>
+</html>
