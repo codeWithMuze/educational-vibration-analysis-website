@@ -193,7 +193,7 @@
             align-items: center;
         }
 
-        .logo {
+        .logo >a{
             font-size: 1.5rem;
             font-weight: 700;
             /* Updated logo gradient to emerald + cream */
@@ -581,7 +581,7 @@
     <!-- Navigation Header -->
     <header>
         <nav class="container flex-between">
-            <div class="logo">↳ Vibration Lab</div>
+            <div class="logo"><a href="#">↳ Vibration Lab</a></div>
             <ul>
                 <li><a href="#hero">Home</a></li>
                 <li><a href="#theory">Theory</a></li>
@@ -1302,44 +1302,49 @@
 
         function submitQuiz() {
             let score = 0;
+            const questions = document.querySelectorAll('#quizForm .card');
             const totalQuestions = Object.keys(quizAnswers).length;
 
-            for (let i = 1; i <= totalQuestions; i++) {
-                const qName = `q${i}`;
+            questions.forEach((questionCard, index) => {
+                const qNum = index + 1;
+                const qName = `q${qNum}`;
                 const selected = document.querySelector(`input[name="${qName}"]:checked`);
 
+                // Create feedback element
                 let feedbackElement = document.createElement('p');
+                feedbackElement.className = 'feedback-msg';
                 feedbackElement.style.marginTop = 'var(--spacing-sm)';
                 feedbackElement.style.fontSize = '0.9rem';
+                feedbackElement.style.fontWeight = 'bold';
+
+                // Remove existing feedback
+                const existingFeedback = questionCard.querySelector('.feedback-msg');
+                if (existingFeedback) existingFeedback.remove();
 
                 if (!selected) {
                     feedbackElement.textContent = 'Please select an answer.';
-                    feedbackElement.style.color = 'var(--primary-light)';
-                    const existingFeedback = document.querySelector(`#quizForm > div:nth-child(${i}) .card div[style*="margin-top"]`);
-                    if (existingFeedback) existingFeedback.remove();
-                    document.querySelector(`#quizForm > div:nth-child(${i}) .card > div`).appendChild(feedbackElement);
-                    continue;
+                    feedbackElement.style.color = 'var(--accent-amber)';
+                    questionCard.appendChild(feedbackElement);
+                    return;
                 }
 
                 if (selected.value === quizAnswers[qName]) {
                     score++;
                     feedbackElement.textContent = '✅ Correct!';
-                    feedbackElement.style.color = '#10b981';
+                    feedbackElement.style.color = 'var(--primary)';
                 } else {
                     feedbackElement.textContent = '❌ Incorrect.';
-                    feedbackElement.style.color = '#fb7185';
+                    feedbackElement.style.color = 'var(--accent-rose)';
                 }
 
-                const existingFeedback = document.querySelector(`#quizForm > div:nth-child(${i}) .card div[style*="margin-top"]`);
-                if (existingFeedback) existingFeedback.remove();
-                document.querySelector(`#quizForm > div:nth-child(${i}) .card > div`).appendChild(feedbackElement);
-            }
+                questionCard.appendChild(feedbackElement);
+            });
 
             const resultsContainer = document.getElementById('quizResults');
             const scoreDisplay = document.getElementById('scoreDisplay');
             const resultMessage = document.getElementById('resultMessage');
 
-            scoreDisplay.textContent = `${score}/${totalQuestions}`;
+            scoreDisplay.textContent = score;
             let message = '';
             const percentage = (score / totalQuestions) * 100;
 
@@ -1354,6 +1359,7 @@
             }
             resultMessage.textContent = message;
             resultsContainer.style.display = 'block';
+            resultsContainer.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
         }
 
     </script>
